@@ -81,8 +81,8 @@ ZenFlow
         });
       } catch (confirmationError) {
         // Non-bloquant
-        const errorMsg = confirmationError instanceof Error ? confirmationError.message : String(confirmationError);
-        logger.warn('Failed to send confirmation email', { error: errorMsg });
+        const errorObj = confirmationError instanceof Error ? confirmationError : new Error(String(confirmationError));
+        logger.warn('Failed to send confirmation email', undefined, errorObj);
       }
 
       return res.status(200).json({
@@ -90,8 +90,8 @@ ZenFlow
         message: 'Votre message a été envoyé avec succès. Nous vous répondrons rapidement.',
       });
     } catch (error) {
-      const errorObj = error instanceof Error ? error : new Error(String(error));
-      logger.error('Contact form error', undefined, errorObj);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      logger.error('Contact form error', { error: errorMessage });
       return res.status(500).json({
         error: 'Une erreur est survenue lors de l\'envoi de votre message. Veuillez réessayer.',
       });
