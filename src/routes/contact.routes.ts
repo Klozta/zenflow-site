@@ -88,7 +88,8 @@ ZenFlow
         message: 'Votre message a été envoyé avec succès. Nous vous répondrons rapidement.',
       });
     } catch (error) {
-      logger.error('Contact form error', { error: error instanceof Error ? error.message : String(error) });
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      logger.error('Contact form error', { error: errorMessage });
       return res.status(500).json({
         error: 'Une erreur est survenue lors de l\'envoi de votre message. Veuillez réessayer.',
       });
