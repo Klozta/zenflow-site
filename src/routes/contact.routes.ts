@@ -53,7 +53,8 @@ ${message}
         logger.info('Contact form submitted', { email, subject });
       } catch (emailError) {
         // Ne pas bloquer la réponse si l'email échoue
-        logger.warn('Failed to send contact email', { error: emailError });
+        const errorMsg = emailError instanceof Error ? emailError.message : String(emailError);
+        logger.warn('Failed to send contact email', { error: errorMsg });
       }
 
       // Envoyer un email de confirmation au client (optionnel)
