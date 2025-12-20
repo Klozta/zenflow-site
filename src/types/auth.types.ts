@@ -54,5 +54,5 @@ export interface UserResponse {
 }
 
 export interface RequestWithUser extends Request {
-  user?: { id: string };
+  user?: { id: string; role?: string };
 }
