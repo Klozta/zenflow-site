@@ -12,9 +12,9 @@ import { requestContextMiddleware } from './middleware/requestContext.middleware
 import { requestIdMiddleware, requestLoggingMiddleware } from './middleware/requestId.middleware.js';
 import { responseTimeMiddleware } from './middleware/responseTime.middleware.js';
 import {
-    sanitizeInput,
-    securityHeaders,
-    suspiciousActivityLogging,
+  sanitizeInput,
+  securityHeaders,
+  suspiciousActivityLogging,
 } from './middleware/security.middleware.js';
 import { timeoutMiddleware } from './middleware/timeout.middleware.js';
 import { logger } from './utils/logger.js';
@@ -103,7 +103,7 @@ const allowedOrigins = [
 ].filter(Boolean);
 
 app.use(cors({
-  origin: (origin, callback) => {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     // Permettre requêtes sans origin (mobile apps, Postman, etc.) en dev uniquement
     if (!origin && process.env.NODE_ENV === 'development') {
       return callback(null, true);
