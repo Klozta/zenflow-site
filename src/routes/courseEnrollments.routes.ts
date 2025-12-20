@@ -1,5 +1,6 @@
 // backend/src/routes/courseEnrollments.routes.ts
 import { Router } from 'express';
+import { RequestWithUser } from '../types/auth.types.js';
 import { z } from 'zod';
 import { asyncHandler } from '../middleware/asyncHandler.middleware.js';
 import { authMiddleware } from '../middleware/auth.middleware.js';
@@ -30,7 +31,7 @@ const router = Router();
 router.get(
   '/',
   authMiddleware,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: RequestWithUser, res) => {
     const userId = req.user?.id;
     if (!userId) {
       throw createError.auth('Utilisateur non authentifié');
@@ -53,7 +54,7 @@ router.get(
 router.get(
   '/:id',
   authMiddleware,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: RequestWithUser, res) => {
     const userId = req.user?.id;
     if (!userId) {
       throw createError.auth('Utilisateur non authentifié');
@@ -85,7 +86,7 @@ router.get(
 router.post(
   '/',
   authMiddleware,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: RequestWithUser, res) => {
     const userId = req.user?.id;
     if (!userId) {
       throw createError.auth('Utilisateur non authentifié');
@@ -120,7 +121,7 @@ router.post(
 router.post(
   '/batch',
   authMiddleware,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: RequestWithUser, res) => {
     const userId = req.user?.id;
     if (!userId) {
       throw createError.auth('Utilisateur non authentifié');
@@ -151,7 +152,7 @@ router.post(
 router.put(
   '/:id/progress',
   authMiddleware,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: RequestWithUser, res) => {
     const userId = req.user?.id;
     if (!userId) {
       throw createError.auth('Utilisateur non authentifié');
@@ -196,7 +197,7 @@ router.put(
 router.get(
   '/course/:courseId/enrolled',
   authMiddleware,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: RequestWithUser, res) => {
     const userId = req.user?.id;
     if (!userId) {
       throw createError.auth('Utilisateur non authentifié');

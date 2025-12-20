@@ -107,7 +107,8 @@ export async function enrollUserInMultipleCourses(
       enrollments.push(enrollment);
     } catch (error) {
       // Logger l'erreur mais continuer pour les autres cours
-      logger.warn('Failed to enroll user in course', error instanceof Error ? error : new Error(String(error)), {
+      logger.warn('Failed to enroll user in course', {
+        error: error instanceof Error ? error.message : String(error),
         userId,
         courseId,
         orderId,
