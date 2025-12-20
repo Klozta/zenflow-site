@@ -1,0 +1,14 @@
+# Configuration Render pour déploiement automatique
+# Ce fichier configure le Root Directory pour Render
+
+services:
+  - type: web
+    name: zenflow-backend
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    rootDir: backend
+    # Désactiver Docker explicitement
+    dockerfilePath: ""
