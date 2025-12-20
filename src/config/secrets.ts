@@ -11,14 +11,19 @@ const REQUIRED_SECRETS = [
   'JWT_REFRESH_SECRET',
   'SUPABASE_URL',
   'SUPABASE_KEY',
-  'UPSTASH_REDIS_URL',
-  'UPSTASH_REDIS_TOKEN',
   'ADMIN_TOKEN',        // ISR on-demand revalidation
   'REVALIDATE_SECRET',  // ISR on-demand revalidation
 ] as const;
 
-// Secrets optionnels (features) gérés directement dans le code (pas besoin de constante)
-// - STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET: nécessaires uniquement si /api/payments est utilisé
+/**
+ * Secrets optionnels (features)
+ * - UPSTASH_REDIS_URL, UPSTASH_REDIS_TOKEN: nécessaires uniquement si Redis cache est utilisé
+ * - STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET: nécessaires uniquement si /api/payments est utilisé
+ */
+const OPTIONAL_SECRETS = [
+  'UPSTASH_REDIS_URL',
+  'UPSTASH_REDIS_TOKEN',
+] as const;
 
 /**
  * Vérifie qu'un secret respecte les critères de sécurité
@@ -63,7 +68,7 @@ export function validateSecrets(): void {
 
     // Validation spécifique selon le secret
     if (key === 'JWT_SECRET' || key === 'JWT_REFRESH_SECRET' ||
-        key === 'ADMIN_TOKEN' || key === 'REVALIDATE_SECRET') {
+      key === 'ADMIN_TOKEN' || key === 'REVALIDATE_SECRET') {
       try {
         validateSecretStrength(key, value, 32);
       } catch (error) {
@@ -94,6 +99,22 @@ export function validateSecrets(): void {
     }
   }
 
+  // Vérifier les secrets optionnels (avertissement seulement)
+  const missingOptional: string[] = [];
+  for (const key of OPTIONAL_SECRETS) {
+    const value = process.env[key];
+    if (!value) {
+      missingOptional.push(key);
+    }
+  }
+
+  if (missingOptional.length > 0) {
+    console.warn(
+      `⚠️  Optional secrets not set: ${missingOptional.join(', ')}\n` +
+      `   Features using these secrets will be disabled.`
+    );
+  }
+
   // Erreurs
   if (missing.length > 0) {
     throw new Error(
@@ -106,7 +127,7 @@ export function validateSecrets(): void {
     throw new Error(`Invalid secrets:\n${invalid.join('\n')}`);
   }
 
-  console.log('✅ All secrets validated successfully');
+  console.log('✅ All required secrets validated successfully');
 }
 
 /**
