@@ -1,6 +1,5 @@
 // backend/src/routes/courseEnrollments.routes.ts
 import { Router } from 'express';
-import { RequestWithUser } from '../types/auth.types.js';
 import { z } from 'zod';
 import { asyncHandler } from '../middleware/asyncHandler.middleware.js';
 import { authMiddleware } from '../middleware/auth.middleware.js';
@@ -12,6 +11,7 @@ import {
     isUserEnrolled,
     updateCourseProgress,
 } from '../services/courseEnrollmentService.js';
+import { RequestWithUser } from '../types/auth.types.js';
 import { createError } from '../utils/errors.js';
 
 const router = Router();
