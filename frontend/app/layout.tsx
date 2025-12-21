@@ -1,6 +1,10 @@
+import './globals.css'
+import Header from './components/Header'
+import Footer from './components/Footer'
+
 export const metadata = {
-  title: 'zenflow',
-  description: 'zenflow E-commerce',
+  title: 'ZenFlow - E-commerce',
+  description: 'Votre plateforme e-commerce moderne',
 }
 
 export default function RootLayout({
@@ -10,7 +14,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
-      <body>{children}</body>
+      <body suppressHydrationWarning={true} className="min-h-screen flex flex-col bg-gray-50">
+        <Header />
+        <main className="flex-grow">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   )
 }
